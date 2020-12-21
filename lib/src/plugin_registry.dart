@@ -3,7 +3,7 @@
 // found in the LICENSE file.
 
 import 'dart:async';
-import 'dart:ui' as ui;
+import 'package:flutter/ui/ui.dart' as ui;
 
 import 'package:flutter/foundation.dart';
 import 'package:flutter/services.dart';
@@ -123,13 +123,15 @@ class _PlatformBinaryMessenger extends BinaryMessenger {
       _handlers.remove(channel);
     else
       _handlers[channel] = handler;
-    ui.channelBuffers.drain(channel, (ByteData data, ui.PlatformMessageResponseCallback callback) async {
+    ui.channelBuffers.drain(channel,
+        (ByteData data, ui.PlatformMessageResponseCallback callback) async {
       await handlePlatformMessage(channel, data, callback);
     });
   }
 
   @override
-  bool checkMessageHandler(String channel, MessageHandler handler) => _handlers[channel] == handler;
+  bool checkMessageHandler(String channel, MessageHandler handler) =>
+      _handlers[channel] == handler;
 
   @override
   void setMockMessageHandler(
